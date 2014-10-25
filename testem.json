@@ -1,0 +1,16 @@
+{
+	"framework": "mocha+chai",
+	"src_files": [
+		"index.js",
+		"specs/specs.js"
+	],
+	"launchers": {
+		"Mocha": {
+			"command": "./node_modules/.bin/mocha specs/specs.js -R tap",
+			"protocol": "tap"
+		}
+	},
+	"launch_in_dev": [
+		"Mocha"
+	]
+}
