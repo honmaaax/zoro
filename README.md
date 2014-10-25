@@ -61,9 +61,9 @@ exports.render = function(req, res){
 
 ## Feature
 
-* `zoro.waterfall()` has about the same function as async.waterfall()
-* `zoro.series()` has about the same function as async.series()
-* `zoro.parallel()` has about the same function as async.parallel()
+* `zoro.waterfall()` has about the same function as [async.waterfall()](https://github.com/caolan/async#waterfall)
+* `zoro.series()` has about the same function as [async.series()](https://github.com/caolan/async#seriestasks-callback)
+* `zoro.parallel()` has about the same function as [async.parallel()](https://github.com/caolan/async#paralleltasks-callback)
 * `zoro.done()` defines a callback function when all async functions success
 * `zoro.fail()` defines a callback function when any async functions error
 * `zoro.always()` defines a callback function when all async functions finish
