@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var expect = require('chai').expect;
 
-var zoro = require('../index');
+var zoro = require('../zoro');
 
 
 
