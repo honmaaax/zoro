@@ -35,7 +35,7 @@ exports.render = function(req, res){
       review : [Reviews, 'getByUser', id]
     })
     .done(function(result){
-      res.render('user-list', result);
+      res.json(result);
     })
     .fail(function(err){
       concole.log(err);
