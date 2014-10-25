@@ -10,17 +10,17 @@ $ npm install zoro
 
 ```js
 zoro
-	.waterfall([
-	  [Posts, 'get', 12345]
-	  [Authors, 'get']
-	])
-	.done(function(result){
-		console.log(result[0]);
-		console.log(result[1]);
-	})
-	.fail(function(err){
-	  concole.log(err);
-	});
+  .waterfall([
+    [Posts, 'get', 12345]
+    [Authors, 'get']
+  ])
+  .done(function(result){
+    console.log(result[0]);
+    console.log(result[1]);
+  })
+  .fail(function(err){
+    concole.log(err);
+  });
 ```
 
 case of express app
@@ -34,20 +34,20 @@ var Reviews = require('reviews');
 exports.render = function(req, res){
   var id = req.params.id;
   zoro
-  	.parallel({
-  		user : [Users, 'getById', id],
-  		review : [Reviews, 'getByUser', id]
-  	})
-  	.done(function(result){
-  		res.render('user-list', {
-  		  page : 'users',
-  		  user : result.user,
-  		  review : result.review
-  		});
-  	})
-  	.fail(function(err){
-  	  concole.log(err);
-  	});
+    .parallel({
+      user : [Users, 'getById', id],
+      review : [Reviews, 'getByUser', id]
+    })
+    .done(function(result){
+      res.render('user-list', {
+        page : 'users',
+        user : result.user,
+        review : result.review
+      });
+    })
+    .fail(function(err){
+      concole.log(err);
+    });
 };
 ```
 
