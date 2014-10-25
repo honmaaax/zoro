@@ -15,8 +15,7 @@ zoro
     [Authors, 'get']
   ])
   .done(function(result){
-    console.log(result[0]);
-    console.log(result[1]);
+    console.log(result);
   })
   .fail(function(err){
     concole.log(err);
@@ -39,11 +38,7 @@ exports.render = function(req, res){
       review : [Reviews, 'getByUser', id]
     })
     .done(function(result){
-      res.render('user-list', {
-        page : 'users',
-        user : result.user,
-        review : result.review
-      });
+      res.render('user-list', result);
     })
     .fail(function(err){
       concole.log(err);
