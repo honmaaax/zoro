@@ -7,46 +7,64 @@ module.exports = {
 		return this;
 	},
 	done : function(func){
-		this._done = func;
+		this._done = _.once(func);
 		return this;
 	},
 	fail : function(func){
-		this._fail = func;
+		this._fail = _.once(func);
 		return this;
 	},
 	always : function(func){
-		this._always = func;
+		this._always = _.once(func);
+		return this;
+	},
+	unset : function(){
+		this._done = undefined;
+		this._fail = undefined;
+		this._always = undefined;
 		return this;
 	},
 	waterfall : function(funcs){
-		async.waterfall(this._replace(funcs), this._chainize(this));
+		_.defer(function(self){
+			async.waterfall(self._replace(funcs), self._chainize(self));
+			self.bind(undefined);
+		}, this);
+		this.unset();
 		return this;
 	},
 	series : function(funcs){
-		async.series(this._replace(funcs), this._chainize(this));
+		_.defer(function(self){
+			async.series(self._replace(funcs), self._chainize(self));
+			self.bind(undefined);
+		}, this);
+		this.unset();
 		return this;
 	},
 	parallel : function(funcs){
-		async.parallel(this._replace(funcs), this._chainize(this));
+		_.defer(function(self){
+			async.parallel(self._replace(funcs), self._chainize(self));
+			self.bind(undefined);
+		}, this);
+		this.unset();
 		return this;
 	},
 	_replace : function(funcs){
 		var self = this;
-		return funcs.map(function(func){
+		var results = _.isArray(funcs) ? [] : {};
+		_(funcs).forEach(function(func, key){
 			var r;
 			if( _.isArray(func) ){
 				r = function(){
 					var args = _.toArray(arguments);
-					if( args.length===1 ){
-						args = func.slice(2).concat(args);
-					}
+					args = func.slice(2).concat(args);
 					func[0][func[1]].apply(self._thisArg || func[0], args);
 				};
 			} else if( _.isFunction(func) ){
 				r = func;
 			}
-			return r;
+			results[key] = r;
 		});
+		return results;
 	},
 	_chainize : function(self){
 		return function(err, res){
