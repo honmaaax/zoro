@@ -27,9 +27,6 @@ case of express app
 ```js
 var zoro = require('zoro');
 
-var Users = require('users');
-var Reviews = require('reviews');
-
 exports.render = function(req, res){
   var id = req.params.id;
   zoro
