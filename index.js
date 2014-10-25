@@ -35,8 +35,12 @@ module.exports = {
 		return funcs.map(function(func){
 			var r;
 			if( _.isArray(func) ){
-				r = function(next){
-					func[0][func[1]].apply(self._thisArg || func[0], func.slice(2).push(next));
+				r = function(){
+					var args = _.toArray(arguments);
+					if( args.length===1 ){
+						args = func.slice(2).concat(args);
+					}
+					func[0][func[1]].apply(self._thisArg || func[0], args);
 				};
 			} else if( _.isFunction(func) ){
 				r = func;

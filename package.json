@@ -1,6 +1,6 @@
 {
   "name": "zoro",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Async with like promise",
   "main": "index.js",
   "keywords": [
