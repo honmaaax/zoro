@@ -1,0 +1,24 @@
+{
+  "name": "zoro",
+  "version": "0.1.0",
+  "description": "Async with like promise",
+  "main": "index.js",
+  "keywords": [
+    "async",
+    "async.js",
+    "deferred",
+    "promise",
+    "then",
+    "done",
+    "fail",
+    "success",
+    "error",
+    "always"
+  ],
+  "author": "Hitoshi Honma",
+  "license": "ISC",
+  "dependencies": {
+    "async": "~0.9.0",
+    "lodash": "~2.4.1"
+  }
+}
