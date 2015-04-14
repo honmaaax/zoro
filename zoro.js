@@ -2,6 +2,11 @@ var _ = require('lodash');
 var async = require('async');
 
 module.exports = {
+	init : function(self, funcs){
+		self = _.cloneDeep(self);
+		self.funcs = funcs;
+		return self;
+	},
 	bind : function(thisArg){
 		this._thisArg = thisArg;
 		return this;
@@ -18,38 +23,30 @@ module.exports = {
 		this._always = _.once(func);
 		return this;
 	},
-	unset : function(){
-		this._done = undefined;
-		this._fail = undefined;
-		this._always = undefined;
-		return this;
-	},
 	waterfall : function(funcs){
-		_.defer(function(self){
-			async.waterfall(self._replace(funcs), self._chainize(self));
-			self.bind(undefined);
-		}, this);
-		this.unset();
-		return this;
+		var self = new this.init(this, funcs);
+		_.defer(function(){
+			async.waterfall(self._replace(), self._chainize());
+		});
+		return self;
 	},
 	series : function(funcs){
-		_.defer(function(self){
-			async.series(self._replace(funcs), self._chainize(self));
-			self.bind(undefined);
-		}, this);
-		this.unset();
-		return this;
+		var self = new this.init(this, funcs);
+		_.defer(function(){
+			async.series(self._replace(), self._chainize());
+		});
+		return self;
 	},
 	parallel : function(funcs){
-		_.defer(function(self){
-			async.parallel(self._replace(funcs), self._chainize(self));
-			self.bind(undefined);
-		}, this);
-		this.unset();
-		return this;
+		var self = new this.init(this, funcs);
+		_.defer(function(){
+			async.parallel(self._replace(), self._chainize());
+		});
+		return self;
 	},
-	_replace : function(funcs){
+	_replace : function(){
 		var self = this;
+		var funcs = self.funcs;
 		var results = _.isArray(funcs) ? [] : {};
 		_(funcs).forEach(function(func, key){
 			var r;
@@ -66,7 +63,8 @@ module.exports = {
 		});
 		return results;
 	},
-	_chainize : function(self){
+	_chainize : function(){
+		var self = this;
 		return function(err, res){
 			if( err!==undefined && err!==null ){
 				if(self._fail) self._fail(err);
